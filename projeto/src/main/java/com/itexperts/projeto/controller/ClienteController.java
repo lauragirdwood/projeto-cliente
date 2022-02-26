@@ -42,6 +42,13 @@ public class ClienteController {
         return ResponseEntity.ok().body(cli);
     }
 
+    //daria pra fazer uma ideia parecida pra pegar o status ativo/inativo
+    @GetMapping("/filter")
+    public ResponseEntity<Cliente> retornarClientePorNomeESobreNome(@RequestParam String nome, @RequestParam String sobreNome) {
+        Cliente cli = clienteService.findByNomeAndSobreNome(nome, sobreNome);
+        return ResponseEntity.ok().body(cli);
+    }
+
     @PostMapping("/{id}/enderecos")
     public ResponseEntity<Cliente> criaEndereco(@RequestBody Endereco endereco, @PathVariable Long id) {
 

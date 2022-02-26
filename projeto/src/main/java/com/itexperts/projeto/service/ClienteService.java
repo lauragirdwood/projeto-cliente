@@ -1,5 +1,6 @@
 package com.itexperts.projeto.service;
 
+import com.itexperts.projeto.enums.TipoStatus;
 import com.itexperts.projeto.model.Cliente;
 import com.itexperts.projeto.model.Endereco;
 import com.itexperts.projeto.repository.ClienteRepository;
@@ -16,6 +17,11 @@ import java.util.Optional;
 
 @Service
 public class ClienteService {
+
+
+    /*
+    * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
+    * */
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -42,12 +48,25 @@ public class ClienteService {
         return cli.get();
     }
 
+    @Transactional(readOnly = true)
+    public Cliente findByNomeAndSobreNome(String nome, String sobreNome) {
+        Optional<Cliente> cli = clienteRepository.findByNomeAndSobreAndSobreNome(nome, sobreNome);
+        cli.orElseThrow(() -> new RuntimeException("cliente não encontrado"));
+
+        return cli.get();
+    }
+
     @Transactional
     public Cliente createEnderecoInCliente(Endereco endereco, Long id) {
 
         List<Endereco> listEndereco = new ArrayList<>();
         Optional<Cliente> cli = clienteRepository.findById(id);
         cli.orElseThrow(() -> new RuntimeException("cliente não encontrado"));
+
+        //conto quantos endereços ativos o cliente tem para não deixar cadastrar mais de um endereço com status ativo
+        Integer enderecoAtivo = enderecoRepository.countClienteIdAndStatus(id, TipoStatus.ATIVO);
+        if(enderecoAtivo >= 1)
+            throw new RuntimeException("Não pdoe existir mais de um endereço ativo");
 
         endereco.setCliente(cli.get());
         listEndereco.add(endereco);
