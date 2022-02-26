@@ -1,10 +1,13 @@
 package com.itexperts.projeto.service;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.itexperts.projeto.enums.TipoStatus;
 import com.itexperts.projeto.model.Cliente;
 import com.itexperts.projeto.model.Endereco;
 import com.itexperts.projeto.repository.ClienteRepository;
 import com.itexperts.projeto.repository.EnderecoRepository;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,25 +60,40 @@ public class ClienteService {
     }
 
     @Transactional
-    public Cliente createEnderecoInCliente(Endereco endereco, Long id) {
+    public Cliente createEnderecoInCliente(Endereco endereco, Long id) throws InvalidFormatException {
 
         List<Endereco> listEndereco = new ArrayList<>();
+        Cliente cliPersist;
         Optional<Cliente> cli = clienteRepository.findById(id);
         cli.orElseThrow(() -> new RuntimeException("cliente não encontrado"));
 
         //conto quantos endereços ativos o cliente tem para não deixar cadastrar mais de um endereço com status ativo
         Integer enderecoAtivo = enderecoRepository.countClienteIdAndStatus(id, TipoStatus.ATIVO);
         if(enderecoAtivo >= 1)
-            throw new RuntimeException("Não pdoe existir mais de um endereço ativo");
+            throw new RuntimeException("Não pode existir mais de um endereço ativo");
+
+        //TODO exception caso usuario tente inserir status diferente de ativo ou inativo
+//        try {
+//            endereco.setCliente(cli.get());
+//            listEndereco.add(endereco);
+//            cli.get().setEnderecos(listEndereco);
+//            cliPersist = clienteRepository.save(cli.get());
+//
+//            return cliPersist;
+//
+//        } catch (Exception e) {
+//
+//            throw new InvalidFormatException("Não pode colocar status diferente de ativo ou inativo", TipoStatus.valueOf(endereco.getStatus().getDescricao()), TipoStatus.class);
+//        }
 
         endereco.setCliente(cli.get());
         listEndereco.add(endereco);
         cli.get().setEnderecos(listEndereco);
-
-        //responsavel por guarar o cliente no banco de dados
-        Cliente cliPersist = clienteRepository.save(cli.get());
+        cliPersist = clienteRepository.save(cli.get());
 
         return cliPersist;
+
+        //TODO processo de update para mudar status caso insira um status ativo por cima de outro, dessa forma o endereço ativo fica inativo e o novo inserido fica ativo
 
     }
 
