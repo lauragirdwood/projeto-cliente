@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
 
     // assim pego a quantidade de status
-    @Query("select count(e) from Endereco e where e.cliente.id = ?1 and e.status =? 2")
+    @Query("select count(e) from Endereco e where e.cliente.id = ?1 and e.status = ?2")
     Integer countClienteIdAndStatus(Long id, TipoStatus status);
 
 }

@@ -1,13 +1,10 @@
 package com.itexperts.projeto.service;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.itexperts.projeto.enums.TipoStatus;
 import com.itexperts.projeto.model.Cliente;
 import com.itexperts.projeto.model.Endereco;
 import com.itexperts.projeto.repository.ClienteRepository;
 import com.itexperts.projeto.repository.EnderecoRepository;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,14 +50,14 @@ public class ClienteService {
 
     @Transactional(readOnly = true)
     public Cliente findByNomeAndSobreNome(String nome, String sobreNome) {
-        Optional<Cliente> cli = clienteRepository.findByNomeAndSobreAndSobreNome(nome, sobreNome);
+        Optional<Cliente> cli = clienteRepository.findByNomeAndSobreNome(nome, sobreNome);
         cli.orElseThrow(() -> new RuntimeException("cliente não encontrado"));
 
         return cli.get();
     }
 
     @Transactional
-    public Cliente createEnderecoInCliente(Endereco endereco, Long id) throws InvalidFormatException {
+    public Cliente createEnderecoInCliente(Endereco endereco, Long id) {
 
         List<Endereco> listEndereco = new ArrayList<>();
         Cliente cliPersist;

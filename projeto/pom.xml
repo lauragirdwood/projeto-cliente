@@ -41,6 +41,7 @@
 
 	</dependencies>
 
+<!--	ir na pasta do projeto, e excecutar o comando mvn package para gerar o executável .jar-->
 	<build>
 		<finalName>LAURA_XAVIER_S7</finalName>
 		<plugins>
