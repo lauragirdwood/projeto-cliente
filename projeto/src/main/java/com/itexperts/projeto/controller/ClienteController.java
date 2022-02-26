@@ -13,7 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1/clientes")
 public class ClienteController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class ClienteController {
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<Cliente> retornarClientePorId(@PathVariable Long id) {
         Cliente cli = clienteService.getById(id);
         return ResponseEntity.ok().body(cli);

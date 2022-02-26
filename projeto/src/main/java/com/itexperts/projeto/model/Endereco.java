@@ -1,5 +1,6 @@
 package com.itexperts.projeto.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.itexperts.projeto.enums.TipoStatus;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Endereco implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Cliente cliente;
 
     public Endereco() {
