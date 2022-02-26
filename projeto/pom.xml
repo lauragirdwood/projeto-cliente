@@ -42,6 +42,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>LAURA_XAVIER_S7</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
