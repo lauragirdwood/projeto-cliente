@@ -61,21 +61,19 @@ public class ClienteController {
         return ResponseEntity.created(location).build();
     }
 
-//    @GetMapping("/{id}/enderecos")
-//    public ResponseEntity<List<Endereco>> retornaTodosOsEnderecosDeUmCliente(@PathVariable Long id) {
-//
-//        List<Endereco> enderecos = clienteService.getAllEnderecosDeUmClienteById(id);
-//
-//        return ResponseEntity.ok().body(enderecos);
-//    }
-//
-//    @GetMapping("/{id}/enderecos/{id}")
-//    public ResponseEntity<Endereco> retornaTodosOsEnderecosDeUmCliente(@PathVariable Long idCliente, @PathVariable Long idEndereco) {
-//
-//        Endereco endereco = clienteService.getEnderecoByIdDeUmClienteById(idCliente, idEndereco);
-//
-//        return ResponseEntity.ok().body(endereco);
-//    }
+    @GetMapping("/{id}/enderecos")
+    public ResponseEntity<List<Endereco>> retornaTodosOsEnderecosDeUmCliente(@PathVariable Long id) {
+
+        List<Endereco> enderecos = clienteService.getAllEnderecosDeUmClienteById(id);
+
+        return ResponseEntity.ok().body(enderecos);
+    }
+
+    @GetMapping("/{idCliente}/enderecos/{idEndereco}")
+    public ResponseEntity<Endereco> retornaTodosOsEnderecosDeUmCliente(@PathVariable Long idCliente, @PathVariable Long idEndereco) {
+        Endereco endereco = clienteService.getEnderecoByIdDeUmClienteById(idEndereco, idCliente);
+        return ResponseEntity.ok().body(endereco);
+    }
 
 }
 

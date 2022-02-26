@@ -83,51 +83,51 @@ public class ClienteService {
 
         endereco.setCliente(cli.get());
         listEndereco.add(endereco);
-        //cli.get().setEnderecos(listEndereco);
+        cli.get().setEnderecos(listEndereco);
         cliPersist = clienteRepository.save(cli.get());
 
         return cliPersist;
     }
 
-//    @Transactional(readOnly = true)
-//    public List<Endereco> getAllEnderecosDeUmClienteById(Long id) {
-//
-//        Cliente cliente;
-//
-//        try {
-//            cliente = getClienteById(id);
-//        } catch (Exception e) {
-//            throw new RuntimeException("Não há cliente cadastrado com este id");
-//        }
-//
-//        List<Endereco> enderecos = cliente.getEnderecos();
-//
-//        if (enderecos.isEmpty())
-//            throw new RuntimeException("Não há endereços cadastrados para este cliente");
-//
-//        return enderecos;
-//    }
+    @Transactional(readOnly = true)
+    public List<Endereco> getAllEnderecosDeUmClienteById(Long id) {
 
-//    @Transactional(readOnly = true)
-//    public Endereco getEnderecoByIdDeUmClienteById(Long idCliente, Long idEndereco) {
-//
-//        Cliente cliente;
-//
-//        try {
-//            cliente = getClienteById(idCliente);
-//        } catch (Exception e) {
-//            throw new RuntimeException("Não há cliente cadastrado com este id");
-//        }
-//
-//        List<Endereco> enderecos = cliente.getEnderecos();
-//        if (enderecos.isEmpty())
-//            throw new RuntimeException("Não há endereços cadastrados para este cliente");
-//
-//        Optional<Endereco> endereco = enderecoRepository.getEnderecoByIdAndId(idCliente, idEndereco);
-//        endereco.orElseThrow(() -> new RuntimeException("Não há endereço cadastrado com este id para este cliente"));
-//
-//        return endereco.get();
-//    }
+        Cliente cliente;
+
+        try {
+            cliente = getClienteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Não há cliente cadastrado com este id");
+        }
+
+        List<Endereco> enderecos = cliente.getEnderecos();
+
+        if (enderecos.isEmpty())
+            throw new RuntimeException("Não há endereços cadastrados para este cliente");
+
+        return enderecos;
+    }
+
+    @Transactional(readOnly = true)
+    public Endereco getEnderecoByIdDeUmClienteById(Long idCliente, Long idEndereco) {
+
+        Cliente cliente;
+
+        try {
+            cliente = getClienteById(idCliente);
+        } catch (Exception e) {
+            throw new RuntimeException("Não há cliente cadastrado com este id");
+        }
+
+        List<Endereco> enderecos = cliente.getEnderecos();
+        if (enderecos.isEmpty())
+            throw new RuntimeException("Não há endereços cadastrados para este cliente");
+
+        Optional<Endereco> endereco = enderecoRepository.findByIdAndCliente(idCliente, cliente);
+        endereco.orElseThrow(() -> new RuntimeException("Não há endereço cadastrado com este id para este cliente"));
+
+        return endereco.get();
+    }
 
 
 }

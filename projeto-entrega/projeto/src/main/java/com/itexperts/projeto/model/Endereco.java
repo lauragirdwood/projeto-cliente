@@ -31,7 +31,6 @@ public class Endereco implements Serializable {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Cliente cliente;
 
     public Endereco() {

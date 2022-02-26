@@ -2,7 +2,6 @@ package com.itexperts.projeto.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -25,7 +24,6 @@ public class Documento implements Serializable {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Cliente cliente;
 
     public Documento() {

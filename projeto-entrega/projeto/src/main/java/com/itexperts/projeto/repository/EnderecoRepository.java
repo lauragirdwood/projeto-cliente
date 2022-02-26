@@ -1,6 +1,7 @@
 package com.itexperts.projeto.repository;
 
 import com.itexperts.projeto.enums.TipoStatus;
+import com.itexperts.projeto.model.Cliente;
 import com.itexperts.projeto.model.Endereco;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,6 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
     Integer countClienteIdAndStatus(Long id, TipoStatus status);
 
     //pega um endereço dentro de um cliente
-    @Query("select e from Endereco e where e.cliente.id = ?1 and e.id = ?2")
-    Optional<Endereco> getEnderecoByIdAndId(Long idCliente, Long idEndereco);
+    Optional<Endereco> findByIdAndCliente(Long idEndereco, Cliente cliente);
 
 }
