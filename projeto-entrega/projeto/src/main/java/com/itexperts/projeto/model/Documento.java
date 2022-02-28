@@ -3,6 +3,7 @@ package com.itexperts.projeto.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.itexperts.projeto.enums.TipoDocumento;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,7 +19,8 @@ public class Documento implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String tipoDoc;
+    @Enumerated(EnumType.STRING)
+    private TipoDocumento tipoDoc;
     private String numero;
 
     @JsonBackReference
@@ -29,7 +31,7 @@ public class Documento implements Serializable {
     public Documento() {
     }
 
-    public Documento(Long id, String tipoDoc, String numero, Cliente cliente) {
+    public Documento(Long id, TipoDocumento tipoDoc, String numero, Cliente cliente) {
         this.id = id;
         this.tipoDoc = tipoDoc;
         this.numero = numero;
@@ -44,11 +46,11 @@ public class Documento implements Serializable {
         this.id = id;
     }
 
-    public String getTipoDoc() {
+    public TipoDocumento getTipoDoc() {
         return tipoDoc;
     }
 
-    public void setTipoDoc(String tipoDoc) {
+    public void setTipoDoc(TipoDocumento tipoDoc) {
         this.tipoDoc = tipoDoc;
     }
 

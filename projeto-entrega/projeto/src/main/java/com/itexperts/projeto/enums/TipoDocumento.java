@@ -1,17 +1,19 @@
 package com.itexperts.projeto.enums;
 
-public enum TipoStatus {
+public enum TipoDocumento {
 
-    ATIVO("Ativo"),
-    INATIVO("Inativo");
+    RG("RG"),
+    CPF("CPF"),
+    TITULO("Título");
 
     private final String descricao;
 
-    TipoStatus(String descricao) {
+    TipoDocumento(String descricao) {
         this.descricao = descricao;
     }
 
     public String getDescricao() {
         return descricao;
     }
+
 }

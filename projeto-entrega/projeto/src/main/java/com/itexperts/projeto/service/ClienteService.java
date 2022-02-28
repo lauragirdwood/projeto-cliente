@@ -1,7 +1,8 @@
 package com.itexperts.projeto.service;
 
-import com.itexperts.projeto.enums.TipoStatus;
+import com.itexperts.projeto.enums.TipoStatusEndereco;
 import com.itexperts.projeto.model.Cliente;
+import com.itexperts.projeto.model.Documento;
 import com.itexperts.projeto.model.Endereco;
 import com.itexperts.projeto.repository.ClienteRepository;
 import com.itexperts.projeto.repository.DocumentoRepository;
@@ -77,7 +78,7 @@ public class ClienteService {
         cli.orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         //conto quantos endereços ativos o cliente tem para não deixar cadastrar mais de um endereço com status ativo
-        Integer enderecoAtivo = enderecoRepository.countClienteIdAndStatus(id, TipoStatus.ATIVO);
+        Integer enderecoAtivo = enderecoRepository.countClienteIdAndStatus(id, TipoStatusEndereco.ATIVO);
         if(enderecoAtivo >= 1)
             throw new RuntimeException("Não pode existir mais de um endereço ativo");
 
@@ -123,11 +124,66 @@ public class ClienteService {
         if (enderecos.isEmpty())
             throw new RuntimeException("Não há endereços cadastrados para este cliente");
 
-        Optional<Endereco> endereco = enderecoRepository.findByIdAndCliente(idCliente, cliente);
+        Optional<Endereco> endereco = enderecoRepository.findByIdAndCliente(idEndereco, cliente);
         endereco.orElseThrow(() -> new RuntimeException("Não há endereço cadastrado com este id para este cliente"));
 
         return endereco.get();
     }
 
+    @Transactional
+    public Cliente createDocumentoInCliente(Documento documento, Long id) {
+
+        //List<Documento> listDocumento = new ArrayList<>();
+        Cliente cliPersist;
+        Optional<Cliente> cli = clienteRepository.findById(id);
+        cli.orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        documento.setCliente(cli.get());
+        cli.get().getDocumentos().add(documento);
+        //cli.get().setDocumentos(listDocumento);
+        cliPersist = clienteRepository.save(cli.get());
+
+        return cliPersist;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Documento> getAllDocumentosDeUmClienteById(Long id) {
+
+        Cliente cliente;
+
+        try {
+            cliente = getClienteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Não há cliente cadastrado com este id");
+        }
+
+        List<Documento> documentos = cliente.getDocumentos();
+
+        if (documentos.isEmpty())
+            throw new RuntimeException("Não há endereços cadastrados para este cliente");
+
+        return documentos;
+    }
+
+    @Transactional(readOnly = true)
+    public Documento getDocumentoByIdDeUmClienteById(Long idCliente, Long idDocumento) {
+
+        Cliente cliente;
+
+        try {
+            cliente = getClienteById(idCliente);
+        } catch (Exception e) {
+            throw new RuntimeException("Não há cliente cadastrado com este id");
+        }
+
+        List<Documento> documentos = cliente.getDocumentos();
+        if (documentos.isEmpty())
+            throw new RuntimeException("Não há endereços cadastrados para este cliente");
+
+        Optional<Documento> documento = documentoRepository.findByIdAndCliente(idDocumento, cliente);
+        documento.orElseThrow(() -> new RuntimeException("Não há endereço cadastrado com este id para este cliente"));
+
+        return documento.get();
+    }
 
 }

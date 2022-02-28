@@ -2,9 +2,8 @@ package com.itexperts.projeto.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.itexperts.projeto.enums.TipoStatus;
+import com.itexperts.projeto.enums.TipoStatusEndereco;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,7 +23,8 @@ public class Endereco implements Serializable {
     private String tipo_logradouro;
     private String nome_rua;
     private Integer numero;
-    private TipoStatus status;
+    @Enumerated(EnumType.STRING)
+    private TipoStatusEndereco status;
     private String cidade;
     private String estado;
 
@@ -36,7 +36,7 @@ public class Endereco implements Serializable {
     public Endereco() {
     }
 
-    public Endereco(Long id, String bairro, String tipo_logradouro, String nome_rua, Integer numero, TipoStatus status, String cidade, String estado, Cliente cliente) {
+    public Endereco(Long id, String bairro, String tipo_logradouro, String nome_rua, Integer numero, TipoStatusEndereco status, String cidade, String estado, Cliente cliente) {
         this.id = id;
         this.bairro = bairro;
         this.tipo_logradouro = tipo_logradouro;
@@ -88,11 +88,11 @@ public class Endereco implements Serializable {
         this.numero = numero;
     }
 
-    public TipoStatus getStatus() {
+    public TipoStatusEndereco getStatus() {
         return status;
     }
 
-    public void setStatus(TipoStatus status) {
+    public void setStatus(TipoStatusEndereco status) {
         this.status = status;
     }
 
